@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kgc.tangcco.dao.bill.BillMapper">
+
+    <select id="getBillByProId" parameterType="int" resultType="Bill">
+        select * from smbms_bill where providerId=#{proId};
+    </select>
+
+
+    <select id="getBillByProductNameAndProviderAndisPPayment" resultType="Bill">
+
+        select sb.*,sp.proName providerName from smbms_bill sb inner join smbms_provider sp on sb.providerId=sp.id
+
+
+        <trim prefix="where" prefixOverrides="and">
+
+            <if test="queryProductName!=null and queryProductName!=''">
+                productName like concat ('%',#{queryProductName},'%')
+            </if>
+
+            <if test="queryProviderId!=null and queryProviderId!=''">
+                and providerId=#{queryProviderId}
+
+            </if>
+
+            <if test="queryIsPayment!=null and queryIsPayment!=''">
+                and isPayment=#{queryIsPayment}
+            </if>
+
+        </trim>
+
+    </select>
+
+
+    <insert id="addBill" parameterType="Bill">
+        INSERT INTO smbms.smbms_bill
+        (
+         billCode,
+         productName,
+         productDesc,
+         productUnit,
+         productCount,
+         totalPrice,
+         isPayment,
+         createdBy,
+         creationDate,
+         modifyBy,
+         modifyDate,
+         providerId
+        )
+        VALUES
+        (
+         #{billCode},
+         #{productName},
+         #{productDesc},
+         #{productUnit},
+         #{productCount},
+         #{totalPrice},
+         #{isPayment},
+         #{createdBy},
+         #{creationDate},
+         #{modifyBy},
+         #{modifyDate},
+         #{providerId}
+        );
+
+    </insert>
+
+
+    <select id="getBillById" parameterType="int" resultType="Bill">
+        select sb.*,sp.proName providerName from smbms_bill sb inner join smbms_provider sp on sb.providerId=sp.id
+        where sb.id=#{id}
+    </select>
+
+
+    <update id="updateBill" parameterType="Bill">
+        UPDATE smbms.smbms_bill
+        SET
+            billCode = #{billCode} ,
+            productName = #{productName} ,
+            productUnit = #{productUnit} ,
+            productCount = #{productCount} ,
+            totalPrice = #{totalPrice} ,
+            isPayment = #{isPayment} ,
+            providerId = #{providerId}
+
+        WHERE
+            id = #{id} ;
+
+
+    </update>
+
+
+    <delete id="delBill" parameterType="int">
+        delete from smbms_bill where id=#{id}
+    </delete>
+
+
+
+</mapper>

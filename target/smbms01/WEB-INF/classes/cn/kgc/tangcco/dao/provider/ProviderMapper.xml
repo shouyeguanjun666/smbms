@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kgc.tangcco.dao.provider.ProviderMapper">
+
+    <select id="getAllProvider" resultType="Provider">
+        select * from smbms_provider
+    </select>
+
+
+    <select id="getProviderByCodeAndName" resultType="Provider">
+        select * from smbms_provider
+        <where>
+        <if test="proCode!=null and proCode!=''">
+            proCode=#{proCode}
+        </if>
+        <if test="proName!=null and proName!=''">
+            proName=#{proName}
+        </if>
+        </where>
+
+    </select>
+
+    <insert id="addProvider" parameterType="Provider">
+
+        INSERT INTO smbms.smbms_provider
+        (
+         proCode,
+         proName,
+         proDesc,
+         proContact,
+         proPhone,
+         proAddress,
+         proFax,
+         createdBy,
+         creationDate,
+         modifyDate,
+         modifyBy
+        )
+        VALUES
+        (
+         #{proCode},
+         #{proName},
+         #{proDesc},
+         #{proContact},
+         #{proPhone},
+         #{proAddress},
+         #{proFax},
+         #{createdBy},
+         #{creationDate},
+         #{modifyDate},
+         #{modifyBy}
+        );
+
+    </insert>
+
+
+
+    <select id="getProById" parameterType="int" resultType="Provider">
+        select * from smbms_provider where id=#{id}
+    </select>
+
+
+    <update id="updatePro" parameterType="Provider">
+
+        UPDATE smbms.smbms_provider
+        SET
+
+            proCode = #{proCode} ,
+            proName =  #{proName}  ,
+            proDesc =  #{proDesc}  ,
+            proContact =  #{proContact}  ,
+            proPhone =  #{proPhone}  ,
+            proAddress =  #{proAddress}  ,
+            proFax =  #{proFax}
+
+            WHERE
+                id = #{id} ;
+    </update>
+
+
+    <delete id="delPro" parameterType="int">
+
+    delete from smbms_provider where id=#{id}
+
+    </delete>
+
+
+</mapper>
